@@ -1,0 +1,38 @@
+{
+  "name": "hello-book2",
+  "version": "1.0.0",
+  "description": "One Paragraph of project description goes here",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VOffoma/Hello-Book2.git"
+  },
+  "author": "Victoria Offoma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VOffoma/Hello-Book2/issues"
+  },
+  "homepage": "https://github.com/VOffoma/Hello-Book2#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "morgan": "^1.9.0",
+    "pg": "^7.3.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.15.0",
+    "sequelize-cli": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0"
+  }
+}
