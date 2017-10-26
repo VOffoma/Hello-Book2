@@ -7,6 +7,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+console.log(`port is ${port}`);
 
 // Configure app to use bodyParser()
 // This will let us get the data from a POST
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 // app.use('/api', router);
 
 app.get('/', (req, res) => {
+  console.log('in the home handler');
   res.send({ greeting: 'hello world' });
 });
 
