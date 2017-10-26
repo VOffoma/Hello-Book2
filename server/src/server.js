@@ -17,10 +17,13 @@ app.use(bodyParser.json());
 // all routes will be prefixed with /api
 // app.use('/api', router);
 
+app.get('/', (req, res) => {
+  res.send({ greeting: 'hello world' });
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`i m listening on port ${port}`);
-  console.log(process.env.NODE_ENV);
 });
 
 export default app;
