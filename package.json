@@ -4,7 +4,7 @@
   "description": "One Paragraph of project description goes here",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -r babel-register -r babel-polyfill server/tests",
     "start": "node index.js",
     "main": "index.js"
   },
@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "chai": "^4.1.2",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
