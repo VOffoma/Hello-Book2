@@ -1,6 +1,4 @@
-import chai from 'chai';
-
-const expect = chai.expect;
+import { expect } from 'chai';
 
 describe('sample test', () => {
   it('addition of 2 and 3 should be 5', () => {
