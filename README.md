@@ -1,5 +1,7 @@
 # Hello-Book2
 
+[![Coverage Status](https://coveralls.io/repos/github/VOffoma/Hello-Book2/badge.svg?branch=develop)](https://coveralls.io/github/VOffoma/Hello-Book2?branch=develop)
+
 One Paragraph of project description goes here
 
 ## Getting Started
