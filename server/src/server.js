@@ -2,6 +2,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import v1Router from './version1/routes';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 // Register routes
 // all routes will be prefixed with /api
 // app.use('/api', router);
+app.use('api/v1', v1Router);
 
 app.get('/', (req, res) => {
   console.log('in the home handler');
