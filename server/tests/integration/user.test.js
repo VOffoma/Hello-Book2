@@ -1,10 +1,19 @@
 import request from 'supertest';
 import { expect } from 'chai';
-import models from '../../src/models';
 import app from '../../src/server';
+import models from '../../src/models';
+import sampleData from '../sampleData';
 
 describe('User', function () {
   let user;
+  before(async function () {
+    await models.User.sequelize.sync();
+    models.User.destroy({ truncate: true });
+    models.User.bulkCreate(
+      sampleData.generateDummyUsers(2),
+      { validate: true, individualHooks: true }
+    );
+  });
 
   describe('/POST users/signup', function () {
     beforeEach(function () {
@@ -66,11 +75,11 @@ describe('User', function () {
   });
 
 
-  after(function () {
-    models.User.destroy({
-      where: {},
-      truncate: true
-    });
-  });
+  // after(function () {
+  //   models.User.destroy({
+  //     where: {},
+  //     truncate: true
+  //   });
+  // });
 });
 

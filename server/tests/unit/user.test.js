@@ -2,8 +2,17 @@ import httpMocks from 'node-mocks-http';
 import { expect } from 'chai';
 import userController from '../../src/controllers/userController';
 import models from '../../src/models';
+import sampleData from '../sampleData';
 
 describe('User', function () {
+  before(async function () {
+    models.sequelize.sync();
+    models.User.destroy({ truncate: true });
+    models.User.bulkCreate(
+      sampleData.generateDummyUsers(2),
+      { validate: true, individualHooks: true }
+    );
+  });
   describe('.addNewUser method', function () {
     let req, res, result, user;
 
@@ -40,10 +49,20 @@ describe('User', function () {
     });
   });
 
-  after(function () {
-    models.User.destroy({
-      where: {},
-      truncate: true
+  describe('.createToken method', function () {
+    let user;
+    before(function () {
+      user = { id: 1, username: 'Wanakey', role: 'User' };
+    });
+
+    it('returns a string token when a user object is passed', function () {
+      expect(userController.createToken(user)).to.be.a('string');
     });
   });
+  // after(function () {
+  //   models.User.destroy({
+  //     where: {},
+  //     truncate: true
+  //   });
+  // });
 });

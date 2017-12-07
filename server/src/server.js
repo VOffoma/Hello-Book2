@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
+import bookRoutes from './routes/bookRoutes';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 // Register routes
 // all routes will be prefixed with /api
 app.use('/api/v1/users', userRoutes());
+app.use('/api/v1/books', bookRoutes());
 
 app.get('/', (req, res) => {
   res.send({ greeting: 'hello world' });

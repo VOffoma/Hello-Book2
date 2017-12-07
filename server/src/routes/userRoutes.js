@@ -10,7 +10,7 @@ const routes = () => {
   router.route('/signup')
     .post(async (req, res, next) => {
       try {
-        const response = await userController.addNewUser(req, res);
+        const response = await userController.addNewUser(req);
         res.status(response.statusCode).send(response.data);
       } catch (error) {
         next(error);
@@ -31,7 +31,7 @@ const routes = () => {
           if (!errors.isEmpty()) {
             helper.throwError(422, errors.mapped());
           }
-          const response = await userController.authenticateUser(req, res);
+          const response = await userController.authenticateUser(req);
           res.status(response.statusCode).send(response.data);
         } catch (error) {
           next(error);
