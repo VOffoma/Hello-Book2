@@ -2,13 +2,13 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import v1Router from './version1/routes';
+import userRoutes from './routes/userRoutes';
+import bookRoutes from './routes/bookRoutes';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
-// console.log(`port is ${port}`);
 
 // Configure app to use bodyParser()
 // This will let us get the data from a POST
@@ -17,13 +17,23 @@ app.use(bodyParser.json());
 
 // Register routes
 // all routes will be prefixed with /api
-// app.use('/api', router);
-app.use('api/v1', v1Router);
+app.use('/api/v1/users', userRoutes());
+app.use('/api/v1/books', bookRoutes());
 
 app.get('/', (req, res) => {
-  console.log('in the home handler');
   res.send({ greeting: 'hello world' });
 });
+
+// error handler
+app.use((err, req, res, next) => {
+  if (err.name === 'SequelizeValidationError') {
+    res.status(422).send({ error: err.errors[0].message });
+  } else {
+    res.status(err.status || 500);
+    res.send({ error: err.message });
+  }
+});
+
 
 // Start server
 app.listen(port, () => {

@@ -4,7 +4,7 @@
   "description": "One Paragraph of project description goes here",
   "main": "server.js",
   "scripts": {
-    "test": "mocha -r babel-register -r babel-polyfill server/tests",
+    "test": "NODE_ENV=test mocha -r babel-register -r babel-polyfill server/tests/**/*.js",
     "test-coverage": "nyc npm test&& nyc report --reporter=text-lcov | coveralls",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "start": "node index.js",
@@ -31,6 +31,7 @@
     "body-parser": "^1.18.2",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
+    "express-validator": "^4.3.0",
     "jsonwebtoken": "^8.1.0",
     "morgan": "^1.9.0",
     "pg": "^7.3.0",
@@ -47,8 +48,11 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
+    "faker": "^4.1.0",
     "mocha": "^4.0.1",
     "mocha-lcov-reporter": "^1.3.0",
-    "nyc": "^11.2.1"
+    "node-mocks-http": "^1.6.6",
+    "nyc": "^11.2.1",
+    "supertest": "^3.0.0"
   }
 }
