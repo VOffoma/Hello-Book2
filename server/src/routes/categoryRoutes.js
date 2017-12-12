@@ -2,7 +2,7 @@ import express from 'express';
 import { check, validationResult } from 'express-validator/check';
 import { sanitize } from 'express-validator/filter';
 import 'express-async-errors';
-import bookController from '../controllers/bookController';
+import categoryController from '../controllers/categoryController';
 import helper from '../helper';
 import middleware from '../middleware';
 
@@ -10,21 +10,32 @@ import middleware from '../middleware';
 const routes = () => {
   const router = express.Router();
 
-  // route for getting all books present
+  // route for getting all categories present
   router.route('/')
     .get(async (req, res) => {
-      const response = await bookController.getAllBooks();
+      const response = await categoryController.getAllCategories();
       res.status(response.statusCode).send(response.data);
     });
 
-  // route for getting a single book
-  router.route('/:bookId')
+  // route for getting a single category
+  router.route('/:categoryId')
     .get([
-      check('bookId').matches(/\d/).withMessage('bookId should be a number'),
-      sanitize('bookId').toInt()
+      check('categoryId').matches(/\d/).withMessage('bookId should be a number'),
+      sanitize('categoryId').toInt()
     ], async (req, res) => {
       helper.hasValidationErrors(validationResult(req));
-      const response = await bookController.getBook(req);
+      const response = await categoryController.getCategory(req);
+      res.status(response.statusCode).send(response.data);
+    });
+
+  // route for getting all the books in a single category
+  router.route('/:categoryId/books')
+    .get([
+      check('categoryId').matches(/\d/).withMessage('bookId should be a number'),
+      sanitize('categoryId').toInt()
+    ], async (req, res) => {
+      helper.hasValidationErrors(validationResult(req));
+      const response = await categoryController.getBooksInACategory(req);
       res.status(response.statusCode).send(response.data);
     });
 
@@ -34,7 +45,7 @@ const routes = () => {
     next();
   });
 
-  // route for adding a new book
+  // route for adding a new category
   router.route('/')
     .post(
       (req, res, next) => {
@@ -42,24 +53,23 @@ const routes = () => {
         next();
       },
       async (req, res) => {
-        const response = await bookController.addBook(req);
+        const response = await categoryController.addCategory(req);
         res.status(response.statusCode).send(response.data);
       }
     );
   // route for updating a book
-  router.route('/:bookId')
+  router.route('/:categoryId')
     .put(
       (req, res, next) => {
         middleware.isAdminRoutes(req);
         next();
       },
       [
-        check('bookId').matches(/\d/).withMessage('bookId should be a number'),
-        sanitize('bookId').toInt(),
-        check('quantity').matches(/\d*/).withMessage('quantity should be a number'),
+        check('categoryId').matches(/\d/).withMessage('categoryId should be a number'),
+        sanitize('categoryId').toInt()
       ], async (req, res) => {
         helper.hasValidationErrors(validationResult(req));
-        const response = await bookController.updateBook(req);
+        const response = await categoryController.updateCategory(req);
         res.status(response.statusCode).send(response.data);
       }
     );

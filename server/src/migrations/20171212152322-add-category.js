@@ -1,30 +1,27 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    queryInterface.createTable('Books', {
+    /*
+      Add altering commands here.
+      Return a promise to correctly handle asynchronicity.
+
+      Example:
+      return queryInterface.createTable('users', { id: Sequelize.INTEGER });
+    */
+    queryInterface.createTable('Categories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      name: {
         type: Sequelize.STRING,
+        unique: true,
         allowNull: false,
-      },
-      author: {
-        type: Sequelize.STRING,
-        allowNull: false
       },
       description: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      quantity: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      isAvailable: {
-        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -33,17 +30,18 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      categoryId: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
+      }
     });
   },
+
   down: (queryInterface, Sequelize) => {
-    queryInterface.dropTable('Books');
+    /*
+      Add reverting commands here.
+      Return a promise to correctly handle asynchronicity.
+
+      Example:
+      return queryInterface.dropTable('users');
+    */
+    queryInterface.dropTable('Categories');
   }
 };
-

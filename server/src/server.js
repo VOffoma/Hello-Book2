@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
 import bookRoutes from './routes/bookRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 // all routes will be prefixed with /api
 app.use('/api/v1/users', userRoutes());
 app.use('/api/v1/books', bookRoutes());
+app.use('/api/v1/categories', categoryRoutes());
 
 app.get('/', (req, res) => {
   res.send({ greeting: 'hello world' });
@@ -33,6 +35,11 @@ app.use((err, req, res, next) => {
     res.send({ error: err.message });
   }
 });
+
+process.on('unhandledRejection', (error) => {
+  console.log('Reason: ', error.message);
+});
+
 
 
 // Start server

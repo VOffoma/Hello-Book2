@@ -5,33 +5,65 @@ import models from '../../src/models';
 import sampleData from '../sampleData';
 
 describe('Book', function () {
+  let bookId, book;
+
   before(async function () {
     await models.Book.sequelize.sync();
     models.Book.destroy({ truncate: true });
-    models.Book.bulkCreate(
-      sampleData.generateDummyBooks(10),
-      { validate: true, individualHooks: true }
-    );
   });
 
-  describe('.addNewUser method', function () {
-    let result;
+  describe('.addBook method', function () {
+    let result, req;
+
+    beforeEach(function () {
+      book = sampleData.generateADummyBook();
+      req = httpMocks.createRequest({ body: book });
+    });
+
+    it('create new book', async function () {
+      result = await bookController.addBook(req);
+      bookId = result.data.newBook.id;
+      expect(result.data.newBook).to.be.an('object');
+      expect(result.data.newBook.title).to.equal(book.title);
+    });
+  });
+
+
+  describe('.getAllBooks method', function () {
+    let resp;
     it('fetch all books', async function () {
-      result = await bookController.getAllBooks();
-      expect(result.data.books).to.be.an('array');
+      resp = await bookController.getAllBooks();
+      expect(resp.data.books).to.be.an('array');
+      expect(resp.data.books.length).to.be.above(0);
     });
   });
 
   describe('.getBook method', function () {
-    let req, result;
+    let req, resp;
 
     beforeEach(function () {
-      req = httpMocks.createRequest({ params: { bookId: 1 } });
+      req = httpMocks.createRequest({ params: { bookId } });
     });
 
     it('fetches a book when a valid bookId is passed', async function () {
-      result = await bookController.getBook(req);
-      expect(result.data.book).to.be.a('object');
+      resp = await bookController.getBook(req);
+      expect(resp.data.book).to.be.a('object');
+      expect(resp.data.book.title).to.equal(book.title);
+    });
+  });
+
+  describe('.updateBook method', function () {
+    let resp, req, bookUpdate;
+
+    beforeEach(function () {
+      bookUpdate = sampleData.generateADummyBook();
+      req = httpMocks.createRequest({ body: bookUpdate, params: { bookId } });
+    });
+
+    it('updates a book', async function () {
+      resp = await bookController.updateBook(req);
+      expect(resp.data.updatedBook).to.be.an('object');
+      expect(resp.data.updatedBook.title).to.equal(bookUpdate.title);
     });
   });
 });

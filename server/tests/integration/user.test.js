@@ -9,15 +9,11 @@ describe('User', function () {
   before(async function () {
     await models.User.sequelize.sync();
     models.User.destroy({ truncate: true });
-    models.User.bulkCreate(
-      sampleData.generateDummyUsers(2),
-      { validate: true, individualHooks: true }
-    );
   });
 
   describe('/POST users/signup', function () {
     beforeEach(function () {
-      user = { username: 'victoria', email: 'victoria@gmail.com', password: 'helloworld' };
+      user = sampleData.generateADummyUser();
     });
 
     it('returns 422 when an invalid data is passed ', async function () {
@@ -37,40 +33,42 @@ describe('User', function () {
   });
 
   describe('/POST users/signin', function () {
+    let resp, loginCredentials;
+
     beforeEach(function () {
-      user = { username: 'victoria', password: 'helloworld' };
+      loginCredentials = { username: user.username, password: user.password };
     });
 
     it('returns 422 when an invalid data is passed ', async function () {
-      user.username = 'v';
-      const res = await request(app)
+      loginCredentials.username = 'v';
+      resp = await request(app)
         .post('/api/v1/users/signin')
-        .send(user);
-      expect(res.statusCode).to.equal(422);
+        .send(loginCredentials);
+      expect(resp.statusCode).to.equal(422);
     });
 
     it('returns 401 when the wrong password is passed ', async function () {
-      user.password = 'hello';
-      const res = await request(app)
+      loginCredentials.password = 'hello';
+      resp = await request(app)
         .post('/api/v1/users/signin')
-        .send(user);
-      expect(res.statusCode).to.equal(401);
+        .send(loginCredentials);
+      expect(resp.statusCode).to.equal(401);
     });
 
     it('returns 401 when the user is not found during authentication', async function () {
-      user.username = 'sandra';
-      const res = await request(app)
+      loginCredentials.username = 'sandra';
+      resp = await request(app)
         .post('/api/v1/users/signin')
-        .send(user);
-      expect(res.statusCode).to.equal(404);
+        .send(loginCredentials);
+      expect(resp.statusCode).to.equal(404);
     });
 
     it('returns the token after successfully login', async function () {
-      const res = await request(app)
+      resp = await request(app)
         .post('/api/v1/users/signin')
-        .send(user);
-      expect(res.body.userToken).to.be.a('string');
-      expect(res.statusCode).to.equal(200);
+        .send(loginCredentials);
+      expect(resp.body.userToken).to.be.a('string');
+      expect(resp.statusCode).to.equal(200);
     });
   });
 

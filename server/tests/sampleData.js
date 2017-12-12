@@ -1,4 +1,6 @@
 import faker from 'faker';
+import helper from '../src/helper';
+
 /**
  * class for populating the database
  */
@@ -21,6 +23,22 @@ class SampleData {
     return dummyBooks;
   }
 
+
+  /**
+   *@description create a single dummy book
+   * @return {object} dummyBook
+   */
+  static generateADummyBook() {
+    const dummyBook = {
+      title: faker.name.title(),
+      author: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      description: faker.lorem.sentence(),
+      quantity: faker.random.number()
+    };
+    return dummyBook;
+  }
+
+
   /**
    *@description create dummy data for user model
    * @param {number} noOfRecords
@@ -37,6 +55,44 @@ class SampleData {
       });
     }
     return dummyUsers;
+  }
+
+  /**
+   *@description create a single dummy user
+   * @return {object} dummyUser
+   */
+  static generateADummyUser() {
+    const dummyUser = {
+      username: faker.internet.userName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+      role: 'User'
+    };
+    return dummyUser;
+  }
+
+  /**
+   *@description create a single dummy user
+   * @return {object} dummyUser
+   */
+  static generateDummyToken() {
+    const dummyUser = this.generateADummyUser();
+    dummyUser.id = 1;
+    dummyUser.role = 'Admin';
+    const dummyToken = helper.createToken(dummyUser);
+    return dummyToken;
+  }
+
+  /**
+   *@description create a single dummy user
+   * @return {object} dummyUser
+   */
+  static generateADummyCategory() {
+    const dummyCategory = {
+      name: faker.lorem.word(),
+      description: faker.lorem.sentence(),
+    };
+    return dummyCategory;
   }
 }
 
